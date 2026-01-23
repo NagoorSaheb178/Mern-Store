@@ -21,9 +21,9 @@ export default function DashboardPage() {
 
   const { data: profile } = useProfileQuery(undefined, { skip: !authUser });
   const { data: products, isLoading, error } = useGetProductsQuery();
-  const [createProduct] = useCreateProductMutation();
-  const [updateProduct] = useUpdateProductMutation();
-  const [deleteProduct] = useDeleteProductMutation();
+  const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
   const [toast, setToast] = useState({ open: false, msg: "", type: "success" });
   const [openForm, setOpenForm] = useState(false);
@@ -248,6 +248,7 @@ export default function DashboardPage() {
                     <Button
                       fullWidth
                       variant="outlined"
+                      disabled={isUpdating || isDeleting}
                       onClick={() => { setEditing(p); setOpenForm(true); }}
                       sx={{ borderRadius: "12px", py: 1, borderColor: "#e2e8f0", fontWeight: 700 }}
                     >
@@ -257,10 +258,11 @@ export default function DashboardPage() {
                       fullWidth
                       variant="outlined"
                       color="error"
+                      disabled={isDeleting}
                       onClick={() => onDelete(p._id)}
                       sx={{ borderRadius: "12px", py: 1, borderColor: "#fee2e2", fontWeight: 700 }}
                     >
-                      Delete
+                      {isDeleting ? "..." : "Delete"}
                     </Button>
                   </Stack>
                 </CardContent>
@@ -272,7 +274,8 @@ export default function DashboardPage() {
         <ProductForm
           open={openForm}
           initial={editing}
-          onClose={() => { setOpenForm(false); setEditing(null); }}
+          loading={isCreating || isUpdating}
+          onClose={() => { if (!isCreating && !isUpdating) { setOpenForm(false); setEditing(null); } }}
           onSubmit={handleSave}
         />
 
