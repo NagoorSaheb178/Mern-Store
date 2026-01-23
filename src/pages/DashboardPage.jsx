@@ -71,13 +71,22 @@ export default function DashboardPage() {
   return (
     <>
       <AppBar position="sticky" elevation={0} sx={{ borderBottom: "1px solid", borderColor: "divider" }}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: "primary.main", letterSpacing: "-1px" }}>
+        <Toolbar sx={{ justifyContent: "space-between", px: { xs: 2, sm: 3 } }}>
+          <Typography variant="h5" sx={{
+            fontWeight: 900,
+            color: "primary.main",
+            letterSpacing: "-1px",
+            fontSize: { xs: "1.25rem", sm: "1.5rem" }
+          }}>
             MERN Store
           </Typography>
 
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Typography variant="body2" sx={{ display: { xs: "none", sm: "block" }, fontWeight: 600 }}>
+          <Stack direction="row" spacing={{ xs: 1, sm: 2 }} alignItems="center">
+            <Typography variant="body2" sx={{
+              display: { xs: "none", md: "block" },
+              fontWeight: 600,
+              fontSize: "0.85rem"
+            }}>
               Hello, <span style={{ color: "#6366f1" }}>{profile?.name || authUser?.name || "User"}</span>
             </Typography>
             <Button
@@ -87,7 +96,11 @@ export default function DashboardPage() {
                 dispatch(logout());
                 dispatch(api.util.resetApiState());
               }}
-              sx={{ borderRadius: "10px" }}
+              sx={{
+                borderRadius: "10px",
+                fontSize: { xs: "0.75rem", sm: "0.8125rem" },
+                px: { xs: 1.5, sm: 2 }
+              }}
             >
               Logout
             </Button>
@@ -95,16 +108,31 @@ export default function DashboardPage() {
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
-          <Typography variant="h4" sx={{ fontWeight: 900 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 6 }, px: { xs: 2, sm: 3 } }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          spacing={2}
+          sx={{ mb: 4 }}
+        >
+          <Typography variant="h4" sx={{
+            fontWeight: 900,
+            fontSize: { xs: "1.75rem", sm: "2.125rem" }
+          }}>
             Products <span style={{ color: "#6366f1" }}>.</span>
           </Typography>
           <Button
             variant="contained"
             size="large"
             onClick={() => { setEditing(null); setOpenForm(true); }}
-            sx={{ px: 4, py: 1.5, borderRadius: "14px", fontWeight: 800 }}
+            sx={{
+              px: { xs: 3, sm: 4 },
+              py: 1.5,
+              borderRadius: "14px",
+              fontWeight: 800,
+              width: { xs: "100%", sm: "auto" }
+            }}
           >
             + Add Product
           </Button>
@@ -117,6 +145,8 @@ export default function DashboardPage() {
             mb: 5,
             overflowX: "auto",
             pb: 1,
+            mx: { xs: -2, sm: 0 },
+            px: { xs: 2, sm: 0 },
             "&::-webkit-scrollbar": { display: "none" },
             msOverflowStyle: "none",
             scrollbarWidth: "none"
@@ -134,6 +164,7 @@ export default function DashboardPage() {
                 py: 2,
                 fontWeight: 700,
                 fontSize: "0.85rem",
+                whiteSpace: "nowrap",
                 transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                 "&:hover": { transform: "scale(1.05)" }
               }}
