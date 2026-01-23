@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Dialog, DialogContent, DialogTitle, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, DialogTitle, Stack, TextField, Typography, useMediaQuery, useTheme, IconButton } from "@mui/material";
 
 function toBase64(file) {
   return new Promise((resolve, reject) => {
@@ -11,6 +11,9 @@ function toBase64(file) {
 }
 
 export default function ProductForm({ open, onClose, onSubmit, initial }) {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [form, setForm] = useState({
     title: "", price: "", category: "general", description: "", imageUrl: "", imageBase64: ""
   });
@@ -34,12 +37,28 @@ export default function ProductForm({ open, onClose, onSubmit, initial }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ fontWeight: 800, pt: 3 }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      fullScreen={fullScreen}
+    >
+      <DialogTitle sx={{
+        fontWeight: 800,
+        pt: { xs: 2.5, sm: 3 },
+        px: { xs: 2, sm: 3 },
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
+      }}>
         {initial?._id ? "Edit Product" : "Create Product"}
+        {fullScreen && (
+          <Button onClick={onClose} sx={{ fontWeight: 700 }}>Close</Button>
+        )}
       </DialogTitle>
-      <DialogContent sx={{ pb: 4 }}>
-        <Box sx={{ pt: 1 }}>
+      <DialogContent sx={{ pb: 4, px: { xs: 2, sm: 3 } }}>
+        <Box sx={{ pt: { xs: 1, sm: 1 } }}>
           <Stack spacing={2.5}>
             <TextField label="Title" variant="outlined" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required fullWidth />
             <TextField label="Price" type="number" variant="outlined" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required fullWidth />
