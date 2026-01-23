@@ -13,15 +13,15 @@
         },
         {
             "src": "/static/(.*)",
-            "dest": "/static/$1"
+            "dest": "/build/static/$1"
         },
         {
             "src": "/favicon.ico",
-            "dest": "/favicon.ico"
+            "dest": "/build/favicon.ico"
         },
         {
             "src": "/manifest.json",
-            "dest": "/manifest.json"
+            "dest": "/build/manifest.json"
         },
         {
             "src": "/(.*)",
