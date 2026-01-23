@@ -74,8 +74,8 @@ router.put("/:id", authMiddleware, async (req, res) => {
     },
     { returnDocument: "after" }
   );
-  if (!u.value) return res.status(404).json({ message: "Product not found or unauthorized" });
-  res.json({ ...u.value, _id: u.value._id.toString() });
+  if (!u) return res.status(404).json({ message: "Product not found or unauthorized" });
+  res.json({ ...u, _id: u._id.toString() });
 });
 
 router.patch("/:id", authMiddleware, async (req, res) => {
@@ -89,8 +89,8 @@ router.patch("/:id", authMiddleware, async (req, res) => {
     { $set: set },
     { returnDocument: "after" }
   );
-  if (!u.value) return res.status(404).json({ message: "Product not found or unauthorized" });
-  res.json({ ...u.value, _id: u.value._id.toString() });
+  if (!u) return res.status(404).json({ message: "Product not found or unauthorized" });
+  res.json({ ...u, _id: u._id.toString() });
 });
 
 module.exports = router;
