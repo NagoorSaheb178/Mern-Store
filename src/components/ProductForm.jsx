@@ -10,7 +10,7 @@ function toBase64(file) {
   });
 }
 
-export default function ProductForm({ open, onClose, onSubmit, initial }) {
+export default function ProductForm({ open, onClose, onSubmit, initial, loading }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -60,10 +60,10 @@ export default function ProductForm({ open, onClose, onSubmit, initial }) {
       <DialogContent sx={{ pb: 4, px: { xs: 2, sm: 3 } }}>
         <Box sx={{ pt: { xs: 1, sm: 1 } }}>
           <Stack spacing={2.5}>
-            <TextField label="Title" variant="outlined" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required fullWidth />
-            <TextField label="Price" type="number" variant="outlined" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required fullWidth />
-            <TextField label="Category" variant="outlined" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} fullWidth />
-            <TextField label="Description" variant="outlined" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} multiline minRows={3} fullWidth />
+            <TextField label="Title" variant="outlined" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required fullWidth disabled={loading} />
+            <TextField label="Price" type="number" variant="outlined" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required fullWidth disabled={loading} />
+            <TextField label="Category" variant="outlined" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} fullWidth disabled={loading} />
+            <TextField label="Description" variant="outlined" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} multiline minRows={3} fullWidth disabled={loading} />
 
             <Typography variant="subtitle2" sx={{ fontWeight: 700, px: 0.5, mb: -1 }}>Product Image</Typography>
             <TextField
@@ -74,8 +74,9 @@ export default function ProductForm({ open, onClose, onSubmit, initial }) {
               onChange={(e) => setForm({ ...form, imageUrl: e.target.value, imageBase64: "" })}
               helperText="If you paste an image URL, upload will be cleared."
               fullWidth
+              disabled={loading}
             />
-            <Button variant="outlined" component="label" fullWidth sx={{ py: 1.5, borderColor: "rgba(255,255,255,0.2)" }}>
+            <Button variant="outlined" component="label" fullWidth sx={{ py: 1.5, borderColor: "rgba(255,255,255,0.2)" }} disabled={loading}>
               Upload Image (Base64)
               <input hidden type="file" accept="image/*" onChange={(e) => handleFile(e.target.files?.[0])} />
             </Button>
@@ -91,8 +92,9 @@ export default function ProductForm({ open, onClose, onSubmit, initial }) {
               fullWidth
               onClick={() => onSubmit(form)}
               sx={{ mt: 2 }}
+              disabled={loading}
             >
-              {initial?._id ? "Update Product" : "Create Product"}
+              {loading ? "Processing..." : (initial?._id ? "Update Product" : "Create Product")}
             </Button>
           </Stack>
         </Box>
