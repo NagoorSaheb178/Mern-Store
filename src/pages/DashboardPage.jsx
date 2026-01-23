@@ -240,6 +240,9 @@ export default function DashboardPage() {
                   <Typography variant="h6" gutterBottom sx={{ fontWeight: 800, lineHeight: 1.2, height: "2.4em", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
                     {p.title}
                   </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1, height: "3em", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", fontSize: "0.85rem" }}>
+                    {p.description || "No description provided."}
+                  </Typography>
                   <Typography variant="h5" sx={{ mt: 2, fontWeight: 900, color: "primary.main" }}>
                     ₹ {p.price}
                   </Typography>
