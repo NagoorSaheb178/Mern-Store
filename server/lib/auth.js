@@ -8,13 +8,17 @@ function signToken(payload) {
 function authMiddleware(req, res, next) {
   const auth = req.headers.authorization || "";
   const [type, token] = auth.split(" ");
-  if (type !== "Bearer" || !token) return res.status(401).json({ message: "Unauthorized" });
+
+  if (!auth) return res.status(401).json({ message: "Unauthorized: No token provided" });
+  if (type !== "Bearer" || !token) return res.status(401).json({ message: "Unauthorized: Invalid token format" });
+
   try {
     const secret = process.env.JWT_SECRET || "default_super_secret_nexus_store_key";
     req.user = jwt.verify(token, secret);
     return next();
-  } catch {
-    return res.status(401).json({ message: "Unauthorized" });
+  } catch (err) {
+    console.error("JWT Verification Error:", err.message);
+    return res.status(401).json({ message: "Unauthorized: Invalid or expired token" });
   }
 }
 
