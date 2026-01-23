@@ -33,7 +33,10 @@ router.post("/signup", async (req, res) => {
         name: doc.name
       }
     });
-  } catch (e) { res.status(500).json({ message: e.message || "Server error" }); }
+  } catch (e) {
+    console.error("Signup Error:", e.message);
+    res.status(500).json({ message: e.message || "Server error" });
+  }
 });
 
 router.post("/login", async (req, res) => {
@@ -41,14 +44,24 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body || {};
     if (!email || !password) return res.status(400).json({ message: "Email and password are required" });
 
+    console.log("Login attempt for:", email);
     const db = await getDb();
     const user = await db.collection("users").findOne({ email: email.toLowerCase() });
-    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+
+    if (!user) {
+      console.warn("Login failed: User not found");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return res.status(401).json({ message: "Invalid credentials" });
+    if (!ok) {
+      console.warn("Login failed: Password mismatch");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     const token = signToken({ userId: user._id.toString(), email: user.email });
+    console.log("Login successful, token generated");
+
     res.json({
       token,
       user: {
@@ -58,7 +71,10 @@ router.post("/login", async (req, res) => {
         name: user.name
       }
     });
-  } catch (e) { res.status(500).json({ message: e.message || "Server error" }); }
+  } catch (e) {
+    console.error("Login Error:", e.message);
+    res.status(500).json({ message: e.message || "Server error" });
+  }
 });
 
 module.exports = router;
