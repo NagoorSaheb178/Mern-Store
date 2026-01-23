@@ -22,5 +22,9 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (_, res) => res.sendFile(path.join(buildPath, "index.html")));
 }
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log("Server running on port", port));
+if (process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => console.log("Server running on port", port));
+}
+
+module.exports = app;
