@@ -17,9 +17,12 @@ app.use("/api/products", productRoutes);
 
 // serve CRA build in production
 if (process.env.NODE_ENV === "production") {
-  const buildPath = path.join(__dirname, "..", "build");
+  const buildPath = path.join(process.cwd(), "build");
+  console.log("Serving build from:", buildPath);
   app.use(express.static(buildPath));
-  app.get("*", (_, res) => res.sendFile(path.join(buildPath, "index.html")));
+  app.get("*", (_, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
 }
 
 if (process.env.NODE_ENV !== "production") {
