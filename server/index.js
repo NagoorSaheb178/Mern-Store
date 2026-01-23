@@ -15,15 +15,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 
-// serve CRA build in production
-if (process.env.NODE_ENV === "production") {
-  const buildPath = path.join(process.cwd(), "build");
-  console.log("Serving build from:", buildPath);
-  app.use(express.static(buildPath));
-  app.get("*", (_, res) => {
-    res.sendFile(path.join(buildPath, "index.html"));
-  });
-}
+// Health check or base API route
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", message: "Serverless API is running." });
+});
 
 if (process.env.NODE_ENV !== "production") {
   const port = process.env.PORT || 5000;
